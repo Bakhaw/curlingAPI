@@ -26,6 +26,30 @@ app.get('/team', (req, res) => {
   });
 });
 
+//POST METHOD
+app.post('/team', (req, res) => {
+	let team = new Team()
+	team.name   = req.body.name;
+	team.team   = req.body.team;
+	team.number = req.body.number;
+	team.role   = req.body.role;
+	team.save((err, saveTeam) => {
+		if(err) res.send({error: "Cound not save the player"})
+			res.send(saveTeam)
+	});
+});
+
+
+//PUT METHOD
+app.put('/team/:id', (req, res) => {
+	const _id = req.params.id;
+	Team.findOneAndUpdate({_id}, req.body, {new:true}, (err, updateTeam) => {
+		if(err) res.json({error: 'Could not modify the player'});
+		res.json({message: 'Player modified !',updateTeam})
+	});
+});
+
+
 // DELETE METHOD
 app.delete('/team/:id', (req, res) => {
   const _id = req.params.id;
